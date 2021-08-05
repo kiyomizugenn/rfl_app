@@ -41,7 +41,7 @@ export const Home = () => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.home_wrapper}>
       {posts.map((post) => (
         <Post
           key={post.id}
