@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import styles from "./module.css/Login.module.css";
+import styles from "./Auth.module.css";
 import { auth, provider, storage } from "../firebase/index";
 import { updateUserProfile } from "../features/userSlice";
-import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "../features/userSlice";
 
 import {
   Avatar,
@@ -80,10 +77,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = () => {
+const Auth = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
@@ -113,12 +109,7 @@ const Login = () => {
   };
 
   const signInGoogle = async () => {
-    try {
-      await auth.signInWithPopup(provider);
-      history.push("/");
-    } catch (err) {
-      alert(err.message);
-    }
+    await auth.signInWithPopup(provider).catch((err) => alert(err.message));
   };
   const signInEmail = async () => {
     await auth.signInWithEmailAndPassword(email, password);
@@ -141,7 +132,7 @@ const Login = () => {
       url = await storage.ref("avatars").child(fileName).getDownloadURL();
     }
 
-    await authUser.user.updateProfile({
+    await authUser.user?.updateProfile({
       displayName: userName,
       photoURL: url,
     });
@@ -251,7 +242,6 @@ const Login = () => {
                   ? async () => {
                       try {
                         await signInEmail();
-                        history.push("/");
                       } catch (err) {
                         alert(err.message);
                       }
@@ -259,7 +249,6 @@ const Login = () => {
                   : async () => {
                       try {
                         await signUpEmail();
-                        history.push("/");
                       } catch (err) {
                         alert(err.message);
                       }
@@ -323,4 +312,4 @@ const Login = () => {
     </Grid>
   );
 };
-export default Login;
+export default Auth;
