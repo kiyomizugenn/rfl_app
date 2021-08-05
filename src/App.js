@@ -3,42 +3,52 @@ import styles from "./App.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, login, logout } from "./features/userSlice";
 import { auth } from "./firebase/index";
-import { Feed } from "./components/Feed";
-import Auth from "./components/Auth";
+import { Home } from "./components/Home";
+import Login from "./components/Login";
+import PrivateRoute from "./components/PrivateRouter";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  RouteProps,
+  Switch,
+} from "react-router-dom";
+import { render } from "@testing-library/react";
+import PostForm from "./components/PostForm";
 
 const App = () => {
-  const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   useEffect(() => {
-    const unSub = auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
+    const unSub = auth.onAuthStateChanged((user) => {
+      if (user) {
         dispatch(
           login({
-            uid: authUser.uid,
-            photUrl: authUser.photoURL,
-            displayName: authUser.displayName,
+            uid: user.uid,
+            photoURL: user.photoURL,
+            displayName: user.displayName,
           })
         );
       } else {
         dispatch(logout());
       }
+      return () => {
+        unSub();
+      };
     });
-    return () => {
-      dispatch(logout());
-    };
   }, [dispatch]);
+  // 初回レンダリング、マウントする時のみ実行される。
+  // クリーンナップ関数は実行されていない。
 
   return (
-    <>
-      {user.uid ? (
-        <div className={styles.app}>
-          <Feed />
-        </div>
-      ) : (
-        <Auth />
-      )}
-    </>
+    <Router>
+      <Switch>
+        <Route path="/login" component={Login} />
+        <PrivateRoute exact path="/" component={Home} />
+        <Route path="/Post" component={PostForm} />
+      </Switch>
+    </Router>
   );
 };
 
