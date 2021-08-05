@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import styles from "./module.css/Post.module.css";
 import { db } from "../firebase/index";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
@@ -27,6 +26,18 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
+    minWidth: 275,
+    marginTop: 15,
+    maxHeight: "200px",
+    position: "relative",
+    borderRadius: "12px",
+  },
+  title: {
+    display: "flex",
+    fontSize: "20px",
+    flexDirection: "column",
+    flexWrap: "wrap",
+    padding: "0 0 0 15px",
   },
   media: {
     height: 0,
@@ -50,10 +61,31 @@ const useStyles = makeStyles((theme) => ({
 export const Post = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [category, setCategory] = useState("");
+
+  const categoryCheck = () => {
+    const category = props.category;
+    switch (category) {
+      case category === "frontend":
+        setCategory("フロントエンドエンジニア");
+        break;
+      case category === "backend":
+        setCategory("バックエンドエンジニア");
+        break;
+      case category === "infra":
+        setCategory("インフラエンジニア");
+        break;
+      default:
+        setCategory("デザイナー");
+    }
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  useEffect(() => {
+    categoryCheck();
+  }, []);
 
   return (
     <Card className={classes.root}>
@@ -67,12 +99,12 @@ export const Post = (props) => {
         title={props.username}
         subheader={new Date(props.timestamp?.toDate()).toLocaleString()}
       />
-      <Typography className={styles.post_title} variant="h5" component="h3">
+      <Typography className={classes.title} variant="h5" component="h3">
         {props.title}
       </Typography>
       <CardContent>
         <Typography variant="body1" color="textSecondary" component="p">
-          {props.content}
+          {category}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
