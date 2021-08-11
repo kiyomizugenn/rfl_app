@@ -1,0 +1,8 @@
+.post {
+  display: grid;
+  grid-template-columns: 45% 40% 15%;
+}
+
+.post_items {
+  grid-column: 2/3;
+}
