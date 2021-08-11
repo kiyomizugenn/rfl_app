@@ -26,9 +26,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 275,
     marginTop: 15,
-    maxHeight: "200px",
     position: "relative",
     borderRadius: "12px",
   },
@@ -39,9 +37,8 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     padding: "0 0 0 15px",
   },
-  media: {
-    height: 0,
-    paddingTop: "56.25%", // 16:9
+  CardContent: {
+    padding: "5px 0 0 15px",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -54,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "rotate(180deg)",
   },
   avatar: {
-    backgroundColor: red[500],
+    backgroundColor: red[300],
   },
 }));
 
@@ -89,43 +86,50 @@ export const Post = (props) => {
   }, []);
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={<Avatar className={classes.avatar} src={props.avatar}></Avatar>}
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={props.username}
-        subheader={new Date(props.timestamp?.toDate()).toLocaleString()}
-      />
-      <Typography className={classes.title} variant="h5" component="h3">
-        {props.title}
-      </Typography>
-      <CardContent>
-        <Typography variant="body1" color="textSecondary" component="p">
-          {category}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Method:</Typography>
-        </CardContent>
-      </Collapse>
-    </Card>
+    <div className={styles.post}>
+      <div className={styles.post_items}>
+        <Card className={classes.root}>
+          <CardHeader
+            avatar={
+              <Avatar className={classes.avatar} src={props.avatar}></Avatar>
+            }
+            action={
+              <IconButton aria-label="settings">
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title={props.username}
+            subheader={new Date(props.timestamp?.toDate()).toLocaleString()}
+          />
+          <Typography className={classes.title} variant="h5" component="h3">
+            {props.title}
+          </Typography>
+          <CardContent className={classes.CardContent}></CardContent>
+          <CardActions disableSpacing className={styles.post_card}>
+            <Typography variant="body1" color="textSecondary" component="p">
+              {category}
+            </Typography>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography paragraph variant="body2">
+                Content <br /> {props.content}
+              </Typography>
+            </CardContent>
+          </Collapse>
+        </Card>
+      </div>
+    </div>
   );
 };
 export default Post;
