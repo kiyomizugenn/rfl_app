@@ -8,7 +8,7 @@ import { selectUser } from "../features/userSlice";
 import { Avatar, StylesProvider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import Messageicon from "@material-ui/icons";
-import SendIcon from "@material-ui/icons";
+import SendIcon from "@material-ui/icons/Send";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -18,7 +18,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import { green, red } from "@material-ui/core/colors";
+import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -32,13 +32,14 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     display: "flex",
-    fontSize: "20px",
+    fontSize: "18px",
     flexDirection: "column",
     flexWrap: "wrap",
-    padding: "0 0 0 15px",
+    paddingLeft: "10px",
+    fontWeight: 550,
   },
   CardContent: {
-    padding: "5px 0 0 15px",
+    padding: "0 0 0 7px",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -57,9 +58,30 @@ const useStyles = makeStyles((theme) => ({
 
 export const Post = (props) => {
   const classes = useStyles();
+  const user = useSelector(selectUser);
   const [expanded, setExpanded] = React.useState(false);
   const [category, setCategory] = useState("");
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([
+    {
+      id: "",
+      avatar: "",
+      text: "",
+      username: "",
+      timestamp: null,
+    },
+  ]);
 
+  const newComment = (e) => {
+    e.preventDefault();
+    db.collection("posts").doc(props.postId).collection("comments").add({
+      avatar: user.photoURL,
+      text: comment,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      username: user.displayName,
+    });
+    setComment("");
+  };
   const categoryCheck = () => {
     const category = props.category;
     switch (category) {
@@ -84,7 +106,28 @@ export const Post = (props) => {
   useEffect(() => {
     categoryCheck();
   }, []);
+  useEffect(() => {
+    const unSub = db
+      .collection("posts")
+      .doc(props.postId)
+      .collection("comments")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        setComments(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            avatar: doc.data().avatar,
+            text: doc.data().text,
+            username: doc.data().username,
+            timestamp: doc.data().timestamp,
+          }))
+        );
+      });
 
+    return () => {
+      unSub();
+    };
+  }, [props.postId]);
   return (
     <div className={styles.post}>
       <div className={styles.post_items}>
@@ -104,9 +147,16 @@ export const Post = (props) => {
           <Typography className={classes.title} variant="h5" component="h3">
             {props.title}
           </Typography>
-          <CardContent className={classes.CardContent}></CardContent>
-          <CardActions disableSpacing className={styles.post_card}>
-            <Typography variant="body1" color="textSecondary" component="p">
+          <div className={styles.post_line}>
+            <p>{props.content}</p>
+          </div>
+          <CardActions disableSpacing className={styles.post_category}>
+            <Typography
+              className={classes.CardContent}
+              variant="body2"
+              color="textSecondary"
+              component="p"
+            >
               {category}
             </Typography>
             <IconButton
@@ -121,10 +171,40 @@ export const Post = (props) => {
             </IconButton>
           </CardActions>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography paragraph variant="body2">
-                Content <br /> {props.content}
-              </Typography>
+            <CardContent className={styles.post_card}>
+              {comments.map((com) => (
+                <div key={com.id} className={styles.post_comment}>
+                  <Avatar src={com.avatar} className={classes.small} />
+
+                  <span className={styles.post_commentUser}>
+                    @{com.username}
+                  </span>
+                  <span className={styles.post_commentText}>{com.text} </span>
+                  <span className={styles.post_headerTime}>
+                    {new Date(com.timestamp?.toDate()).toLocaleString()}
+                  </span>
+                </div>
+              ))}
+              <form onSubmit={newComment}>
+                <div className={styles.post_form}>
+                  <input
+                    className={styles.post_input}
+                    type="text"
+                    placeholder="Type new comment..."
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <button
+                    disabled={!comment}
+                    className={
+                      comment ? styles.post_button : styles.post_buttonDisable
+                    }
+                    type="submit"
+                  >
+                    <SendIcon className={styles.post_sendIcon} />
+                  </button>
+                </div>
+              </form>
             </CardContent>
           </Collapse>
         </Card>

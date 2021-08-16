@@ -6,3 +6,59 @@
 .post_items {
   grid-column: 2/3;
 }
+
+.post_line {
+  overflow-wrap: break-word;
+  padding: 0 15px 0 15px;
+}
+.post_line p {
+  margin-bottom: 5px;
+}
+.post_commentIcon {
+  margin-top: 15px;
+  color: whitesmoke;
+  cursor: pointer;
+}
+.post_comment {
+  display: flex;
+  align-items: center;
+  word-break: break-all;
+}
+.post_commentUser {
+  font-weight: 600;
+  font-size: 15px;
+  color: black;
+  margin-right: 12px;
+}
+.post_commentText {
+  font-size: 13px;
+  color: black;
+  margin-right: 10px;
+}
+.post_form {
+  margin: 10px;
+  position: relative;
+  display: flex;
+}
+.post_input {
+  outline: none;
+  border: none;
+  border-bottom: solid;
+  color: #aaaaaa;
+}
+.post_button {
+  border: none;
+  color: blue;
+  background-color: transparent;
+  cursor: pointer;
+}
+.post_buttonDisable {
+  display: none;
+}
+.post_card {
+  padding-top: 0%;
+  margin-top: 0%;
+}
+.post_category {
+  padding-top: 0%;
+}
