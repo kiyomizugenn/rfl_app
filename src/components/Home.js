@@ -42,18 +42,22 @@ export const Home = () => {
 
   return (
     <div className={styles.home_wrapper}>
-      {posts.map((post) => (
-        <Post
-          key={post.id}
-          postId={post.id}
-          avatar={post.avatar}
-          title={post.title}
-          content={post.content}
-          category={post.category}
-          timestamp={post.timestamp}
-          username={post.username}
-        />
-      ))}
+      {posts[0]?.id && (
+        <>
+          {posts.map((post) => (
+            <Post
+              key={post.id}
+              postId={post.id}
+              avatar={post.avatar}
+              title={post.title}
+              content={post.content}
+              category={post.category}
+              timestamp={post.timestamp}
+              username={post.username}
+            />
+          ))}
+        </>
+      )}
     </div>
   );
 };
