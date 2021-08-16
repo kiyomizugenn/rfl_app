@@ -4,6 +4,10 @@ import { auth, db } from "../firebase/index";
 import { useHistory } from "react-router";
 import Post from "./Post";
 import styles from "./module.css/Home.module.css";
+import Tags from "./Tags";
+import { red } from "@material-ui/core/colors";
+import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+import FeedSelector from "./FeedSelector";
 
 export const Home = () => {
   const history = useHistory();
@@ -42,6 +46,13 @@ export const Home = () => {
 
   return (
     <div className={styles.home_wrapper}>
+      <div className="home-aside">
+        <h5 style={{ marginTop: "15px" }}>
+          <LocalOfferIcon style={{ color: red[500] }} />
+          &nbsp; Tags
+        </h5>
+        <Tags />
+      </div>
       {posts[0]?.id && (
         <>
           {posts.map((post) => (
