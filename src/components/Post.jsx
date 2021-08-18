@@ -96,7 +96,6 @@ export const Post = (props) => {
         break;
       default:
         setCategory("#デザイナー");
-        console.log(category);
     }
   };
 
