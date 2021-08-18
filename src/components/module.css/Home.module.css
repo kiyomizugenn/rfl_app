@@ -1,0 +1,10 @@
+.home_wrapper {
+  display: grid;
+  grid-template-columns: 15% 25% 5% 40% 10%;
+}
+.home_aside {
+  grid-column: 2 / 3;
+}
+.home_post {
+  grid-column: 4/5;
+}

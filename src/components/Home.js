@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { auth, db } from "../firebase/index";
+import { db } from "../firebase/index";
 import { useHistory } from "react-router";
 import Post from "./Post";
 import styles from "./module.css/Home.module.css";
@@ -8,6 +8,7 @@ import Tags from "./Tags";
 import { red } from "@material-ui/core/colors";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import FeedSelector from "./FeedSelector";
+import TagTimeline from "./TagTimeline";
 
 //データベースから受け取る
 // デフォルトで描画
@@ -65,29 +66,33 @@ export const Home = () => {
 
   return (
     <div className={styles.home_wrapper}>
-      <div className="home-aside">
+      <div className={styles.home_aside}>
         <h5 style={{ marginTop: "15px" }}>
           <LocalOfferIcon style={{ color: red[500] }} />
           &nbsp; Tags
         </h5>
         <Tags />
+        <TagTimeline />
       </div>
-      {currentPost[0]?.id && (
-        <>
-          {currentPost.map((post) => (
-            <Post
-              key={post.id}
-              postId={post.id}
-              avatar={post.avatar}
-              title={post.title}
-              content={post.content}
-              category={post.category}
-              timestamp={post.timestamp}
-              username={post.username}
-            />
-          ))}
-        </>
-      )}
+      <div className={styles.home_post}>
+        <h3>Posts</h3>
+        {currentPost[0]?.id && (
+          <>
+            {currentPost.map((post) => (
+              <Post
+                key={post.id}
+                postId={post.id}
+                avatar={post.avatar}
+                title={post.title}
+                content={post.content}
+                category={post.category}
+                timestamp={post.timestamp}
+                username={post.username}
+              />
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 };
