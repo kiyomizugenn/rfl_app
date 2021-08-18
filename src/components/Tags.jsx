@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export default function Tags() {
+export const Tags = () => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -43,4 +43,5 @@ export default function Tags() {
       </List>
     </>
   );
-}
+};
+export default Tags;
