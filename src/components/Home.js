@@ -9,9 +9,13 @@ import { red } from "@material-ui/core/colors";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import FeedSelector from "./FeedSelector";
 
+//データベースから受け取る
+// デフォルトで描画
+// クエリパラメーターが変化したとき、上記と同一のカテゴリーのみ　Post描画
+
 export const Home = () => {
   const history = useHistory();
-  const [posts, setPosts] = useState([
+  const [currentPost, setCurrentPost] = useState([
     {
       id: "",
       avatar: "",
@@ -22,27 +26,42 @@ export const Home = () => {
       username: "",
     },
   ]);
+
+  const query = window.location.search;
+  const category = /^\?category=/.test(query)
+    ? query.split("?category=")[1]
+    : "";
+
   useEffect(() => {
-    const unSub = db
-      .collection("posts")
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) =>
-        setPosts(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            avatar: doc.data().avatar,
-            title: doc.data().title,
-            content: doc.data().content,
-            category: doc.data().category,
-            timestamp: doc.data().timestamp,
-            username: doc.data().username,
-          }))
-        )
-      );
-    return () => {
-      unSub();
+    const f = async () => {
+      await getPosts(category);
     };
-  }, []);
+    f();
+  }, [query]);
+
+  const getPosts = async (category) => {
+    let query = db.collection("posts").orderBy("timestamp", "desc");
+
+    query = category !== "" ? query.where("category", "==", category) : query;
+
+    let posts = [];
+
+    await query.get().then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        posts.push({
+          id: doc.id,
+          avatar: doc.data().avatar,
+          title: doc.data().title,
+          content: doc.data().content,
+          category: doc.data().category,
+          timestamp: doc.data().timestamp,
+          username: doc.data().username,
+        });
+      });
+
+      setCurrentPost(posts);
+    });
+  };
 
   return (
     <div className={styles.home_wrapper}>
@@ -53,9 +72,9 @@ export const Home = () => {
         </h5>
         <Tags />
       </div>
-      {posts[0]?.id && (
+      {currentPost[0]?.id && (
         <>
-          {posts.map((post) => (
+          {currentPost.map((post) => (
             <Post
               key={post.id}
               postId={post.id}
