@@ -44,14 +44,14 @@ const App = () => {
 
   return (
     <Router>
-      <Switch>
-        <Route path="/login" component={Login} />
-        <div>
-          <Header />
+      <div>
+        <Header />
+        <Switch>
+          <Route path="/login" component={Login} />
           <PrivateRoute exact path="/" component={Home} />
           <Route path="/Post" component={PostForm} />
-        </div>
-      </Switch>
+        </Switch>
+      </div>
     </Router>
   );
 };
