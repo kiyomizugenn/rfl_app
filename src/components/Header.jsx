@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import HeaderRight from "./HeaderRight";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     marginLeft: theme.spacing(7),
   },
+  header: {
+    width: "95%",
+  },
 }));
 
 export const Header = () => {
@@ -23,10 +27,13 @@ export const Header = () => {
   return (
     <div className={classes.root}>
       <AppBar position="fixed">
-        <Toolbar variant="regular">
+        <Toolbar className={classes.header}>
           <Typography variant="h5" className={classes.title}>
             Reactive
           </Typography>
+          <div>
+            <HeaderRight />
+          </div>
         </Toolbar>
       </AppBar>
     </div>
