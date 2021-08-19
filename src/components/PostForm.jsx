@@ -31,12 +31,6 @@ const PostForm = () => {
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
 
-  useEffect(() => {
-    firebase.firestore().settings({
-      ignoreUndefinedProperties: true,
-    });
-  }, []);
-
   const sendPost = (e) => {
     e.preventDefault();
     db.collection("posts").add({
@@ -109,6 +103,15 @@ const PostForm = () => {
         >
           Post
         </Button>
+        <div>
+          <button
+            onClick={async () => {
+              history.push("/");
+            }}
+          >
+            キャンセル
+          </button>
+        </div>
       </form>
     </div>
   );
