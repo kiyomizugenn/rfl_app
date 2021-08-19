@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import { render } from "@testing-library/react";
 import PostForm from "./components/PostForm";
+import Header from "./components/Header";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -45,8 +46,11 @@ const App = () => {
     <Router>
       <Switch>
         <Route path="/login" component={Login} />
-        <PrivateRoute exact path="/" component={Home} />
-        <Route path="/Post" component={PostForm} />
+        <div>
+          <Header />
+          <PrivateRoute exact path="/" component={Home} />
+          <Route path="/Post" component={PostForm} />
+        </div>
       </Switch>
     </Router>
   );
