@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    marginLeft: theme.spacing(10),
   },
 }));
 
@@ -21,10 +22,10 @@ export const Header = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            RFL
+      <AppBar position="fixed">
+        <Toolbar variant="regular">
+          <Typography variant="h5" className={classes.title}>
+            Reactive
           </Typography>
         </Toolbar>
       </AppBar>
