@@ -38,7 +38,7 @@ const PostForm = () => {
       title: title,
       content: content,
       category: category,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      timestamp: firebase.firestore.Timestamp.now(),
       username: user.displayName,
     });
     setTitle("");
