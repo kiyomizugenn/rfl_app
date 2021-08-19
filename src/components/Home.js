@@ -67,7 +67,7 @@ export const Home = () => {
   return (
     <div className={styles.home_wrapper}>
       <div className={styles.home_aside}>
-        <h5 style={{ marginTop: "15px" }}>
+        <h5 style={({ marginTop: "15px" }, { fontSize: "25px" })}>
           <LocalOfferIcon style={{ color: red[500] }} />
           &nbsp; Tags
         </h5>
@@ -75,7 +75,7 @@ export const Home = () => {
         <TagTimeline />
       </div>
       <div className={styles.home_post}>
-        <h3>Posts</h3>
+        <h3 className={styles.home_post_title}>Posts</h3>
         {currentPost[0]?.id && (
           <>
             {currentPost.map((post) => (
