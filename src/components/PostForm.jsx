@@ -54,7 +54,7 @@ const PostForm = () => {
   };
 
   return (
-    <div>
+    <div style={{ marginTop: "80px" }}>
       <form onSubmit={sendPost}>
         <TextField
           margin="normal"
