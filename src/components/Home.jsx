@@ -7,6 +7,7 @@ import styles from "./module.css/Home.module.css";
 import Tags from "./Tags";
 import { red } from "@material-ui/core/colors";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+import { Button } from "@material-ui/core";
 import FeedSelector from "./FeedSelector";
 import TagTimeline from "./TagTimeline";
 
@@ -16,6 +17,8 @@ import TagTimeline from "./TagTimeline";
 
 export const Home = () => {
   const history = useHistory();
+  const [loadIndex, setLoadIndex] = useState(3);
+  const [isEmpty, setIsEmpty] = useState(false);
   const [currentPost, setCurrentPost] = useState([
     {
       id: "",
@@ -27,7 +30,13 @@ export const Home = () => {
       username: "",
     },
   ]);
-
+  const displayPost = () => {
+    if (loadIndex > currentPost.length) {
+      setIsEmpty(true);
+    } else {
+      setLoadIndex(loadIndex + 4);
+    }
+  };
   const query = window.location.search;
   const category = /^\?category=/.test(query)
     ? query.split("?category=")[1]
@@ -61,6 +70,7 @@ export const Home = () => {
       });
 
       setCurrentPost(posts);
+      setIsEmpty(false);
     });
   };
 
@@ -78,7 +88,7 @@ export const Home = () => {
         <h3 className={styles.home_post_title}>Posts</h3>
         {currentPost[0]?.id && (
           <>
-            {currentPost.map((post) => (
+            {currentPost.slice(0, loadIndex).map((post) => (
               <Post
                 key={post.id}
                 postId={post.id}
@@ -92,6 +102,15 @@ export const Home = () => {
             ))}
           </>
         )}
+        <div style={{ textAlign: "center", marginTop: "30px" }}>
+          <Button
+            disabled={isEmpty ? true : false}
+            onClick={displayPost}
+            variant="contained"
+          >
+            さらに表示
+          </Button>
+        </div>
       </div>
     </div>
   );
