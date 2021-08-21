@@ -20,14 +20,12 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
-import { auth, db, storage } from "../firebase";
+import { db } from "../firebase";
 import firebase from "firebase";
 import { selectUser } from "../features/userSlice";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import TitleIcon from "@material-ui/icons/Title";
-import CategoryIcon from "@material-ui/icons/Category";
-import DetailsIcon from "@material-ui/icons/Details";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   postFormBox: {
@@ -46,26 +44,45 @@ const PostForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
+  const [error, setError] = useState("");
 
-  const sendPost = (e) => {
+  const sendPost = async (e) => {
     e.preventDefault();
-    db.collection("posts").add({
-      avatar: user.photoURL,
-      title: title,
-      content: content,
-      category: category,
-      timestamp: firebase.firestore.Timestamp.now(),
-      username: user.displayName,
-    });
-    setTitle("");
-    setContent("");
-    setCategory("");
-    history.push("/");
+    if (title.length > 42) {
+      return setError("タイトルは42文字以内で入力してください");
+    }
+    if (title === "") {
+      return setError("タイトルは入力必須項目です");
+    }
+    if (content.length > 100) {
+      return setError("内容は100文字以内で入力してください");
+    }
+    if (content === "") {
+      return setError("内容入力は必須項目です");
+    }
+    setError("");
+    try {
+      db.collection("posts").add({
+        avatar: user.photoURL,
+        title: title,
+        content: content,
+        category: category,
+        timestamp: firebase.firestore.Timestamp.now(),
+        username: user.displayName,
+      });
+      setTitle("");
+      setContent("");
+      setCategory("");
+      history.push("/");
+    } catch {
+      setError("投稿に失敗しました");
+    }
   };
 
   return (
     <div className={styles.post_form}>
       <Card className={styles.post_form_card}>
+        {error && <Alert severity="error">{error}</Alert>}
         <CardContent className={styles.post_form_container}>
           <div className={styles.post_form_head}>
             <h2>Post Form</h2>
@@ -92,6 +109,7 @@ const PostForm = () => {
                 </InputLabel>
                 <Select
                   className={styles.post_form_select}
+                  required
                   labelId="category-select-label"
                   id="category-select"
                   value={category}
@@ -99,7 +117,6 @@ const PostForm = () => {
                     setCategory(e.target.value);
                   }}
                 >
-                  <MenuItem value="">None</MenuItem>
                   <MenuItem value="frontend">フロントエンドエンジニア</MenuItem>
                   <MenuItem value="backend">バックエンドエンジニア</MenuItem>
                   <MenuItem value="infra">インフラエンジニア</MenuItem>
