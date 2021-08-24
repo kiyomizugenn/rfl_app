@@ -5,6 +5,7 @@ import styles from "./module.css/Post.module.css";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
+import { useHistory } from "react-router";
 import { Avatar, StylesProvider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import Messageicon from "@material-ui/icons";
@@ -23,6 +24,8 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +42,13 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 550,
   },
   CardContent: {
-    padding: "0 0 0 7px",
+    paddingBottom: "7px",
+    borderRadius: "12px",
+    border: "solid 1px #555555",
+    height: "25px",
+    lineHeight: "25px",
+    paddingLeft: "5px",
+    paddingRight: "5px",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -54,14 +63,30 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[300],
   },
+  small: {
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+    marginRight: theme.spacing(2),
+    margin: "5px",
+  },
+  threeDots: {
+    float: "right",
+    margin: "16px",
+    "&:focus": {
+      outline: "none",
+    },
+  },
 }));
 
 export const Post = (props) => {
   const classes = useStyles();
   const user = useSelector(selectUser);
+  const history = useHistory;
   const [expanded, setExpanded] = React.useState(false);
   const [category, setCategory] = useState("");
   const [comment, setComment] = useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [update, setUpdata] = useState(false);
   const [comments, setComments] = useState([
     {
       id: "",
@@ -94,14 +119,36 @@ export const Post = (props) => {
       case "infra":
         setCategory("#インフラエンジニア");
         break;
-      default:
+      case "designer":
         setCategory("#デザイナー");
+        break;
+      default:
+        break;
     }
   };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const deletePost = () => {
+    db.collection("posts")
+      .doc(props.postId)
+      .delete()
+      .then(() => {
+        console.log("削除成功！！");
+        window.location.reload();
+      })
+      .catch(() => console.log("削除失敗!!"));
+  };
+
   useEffect(() => {
     categoryCheck();
   }, []);
@@ -136,9 +183,39 @@ export const Post = (props) => {
               <Avatar className={classes.avatar} src={props.avatar}></Avatar>
             }
             action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
+              <>
+                {user.uid === props.uid && (
+                  <IconButton onClick={handleClick} aria-haspopup="true">
+                    <MoreVertIcon />
+                  </IconButton>
+                )}
+                <Menu
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={open}
+                  onClose={handleClose}
+                  PaperProps={{
+                    style: {
+                      width: "150px",
+                    },
+                  }}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                    }}
+                  ></MenuItem>
+
+                  <MenuItem
+                    onClick={() => {
+                      deletePost();
+                      handleClose();
+                    }}
+                  >
+                    削除する
+                  </MenuItem>
+                </Menu>
+              </>
             }
             title={props.username}
             subheader={new Date(props.timestamp?.toDate()).toLocaleString()}
@@ -185,7 +262,7 @@ export const Post = (props) => {
                 </div>
               ))}
               <form onSubmit={newComment}>
-                <div className={styles.post_form}>
+                <div className={styles.post_send}>
                   <input
                     className={styles.post_input}
                     type="text"
