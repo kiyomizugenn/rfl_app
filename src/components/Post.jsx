@@ -69,24 +69,15 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     margin: "5px",
   },
-  threeDots: {
-    float: "right",
-    margin: "16px",
-    "&:focus": {
-      outline: "none",
-    },
-  },
 }));
 
 export const Post = (props) => {
   const classes = useStyles();
   const user = useSelector(selectUser);
-  const history = useHistory;
   const [expanded, setExpanded] = React.useState(false);
   const [category, setCategory] = useState("");
   const [comment, setComment] = useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [update, setUpdata] = useState(false);
   const [comments, setComments] = useState([
     {
       id: "",
@@ -152,6 +143,7 @@ export const Post = (props) => {
   useEffect(() => {
     categoryCheck();
   }, []);
+
   useEffect(() => {
     const unSub = db
       .collection("posts")
@@ -196,16 +188,10 @@ export const Post = (props) => {
                   onClose={handleClose}
                   PaperProps={{
                     style: {
-                      width: "150px",
+                      width: "100px",
                     },
                   }}
                 >
-                  <MenuItem
-                    onClick={() => {
-                      handleClose();
-                    }}
-                  ></MenuItem>
-
                   <MenuItem
                     onClick={() => {
                       deletePost();
