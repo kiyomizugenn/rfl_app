@@ -60,9 +60,7 @@ const useStyles = makeStyles((theme) => ({
   expandOpen: {
     transform: "rotate(180deg)",
   },
-  avatar: {
-    backgroundColor: red[300],
-  },
+
   small: {
     width: theme.spacing(4),
     height: theme.spacing(4),
