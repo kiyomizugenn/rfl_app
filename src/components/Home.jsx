@@ -28,6 +28,7 @@ export const Home = () => {
       category: "",
       timestamp: null,
       username: "",
+      uid: "",
     },
   ]);
   const displayPost = () => {
@@ -66,6 +67,7 @@ export const Home = () => {
           category: doc.data().category,
           timestamp: doc.data().timestamp,
           username: doc.data().username,
+          uid: doc.data().uid,
         });
       });
 
@@ -98,6 +100,7 @@ export const Home = () => {
                 category={post.category}
                 timestamp={post.timestamp}
                 username={post.username}
+                uid={post.uid}
               />
             ))}
           </>
