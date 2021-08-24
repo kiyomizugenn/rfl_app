@@ -26,6 +26,7 @@ import CameraIcon from "@material-ui/icons/Camera";
 import EmailIcon from "@material-ui/icons/Email";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import PersonIcon from "@material-ui/icons/Person";
 
 function getModalStyle() {
   const top = 50;
@@ -41,9 +42,11 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
+    marginTop: "40px",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage:
+      "url(https://images.unsplash.com/photo-1581092583537-20d51b4b4f1b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -77,6 +80,19 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(10),
+  },
+  guestUserBtn: {
+    display: "block",
+    margin: "30px auto",
+    fontWeight: "bold",
+    backgroundColor: "#b5b5b5",
+    "&:hover": {
+      backgroundColor: "#8e8e8e",
+    },
+  },
+  guestIcon: {
+    display: "block",
+    marginLeft: "70px",
   },
 }));
 
@@ -151,6 +167,10 @@ const Login = () => {
         photoURL: url,
       })
     );
+  };
+
+  const guestSignUp = async () => {
+    await auth.signInWithEmailAndPassword("guest@example.com", "password");
   };
 
   return (
@@ -239,7 +259,7 @@ const Login = () => {
               disabled={
                 isLogin
                   ? !email || password.length < 6
-                  : !userName || !email || password.length < 6 || !avatarImage
+                  : !userName || !email || password.length < 6
               }
               fullWidth
               variant="contained"
@@ -295,6 +315,21 @@ const Login = () => {
               onClick={signInGoogle}
             >
               SIGNIN with Google
+            </Button>
+            <Button
+              className={classes.guestUserBtn}
+              variant="contained"
+              startIcon={<PersonIcon className={classes.guestIcon} />}
+              onClick={async () => {
+                try {
+                  await guestSignUp();
+                  history.push("/");
+                } catch (err) {
+                  alert(err.message);
+                }
+              }}
+            >
+              SIGNIN GUEST USER
             </Button>
           </form>
           <Modal open={openModal} onClose={() => setOpenModal(false)}>
