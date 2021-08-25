@@ -19,9 +19,6 @@ import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -99,17 +96,28 @@ export const Post = (props) => {
   const categoryCheck = () => {
     const category = props.category;
     switch (category) {
-      case "frontend":
-        setCategory("#フロントエンドエンジニア");
+      case "rock":
+        setCategory("#ROCK/POPS");
         break;
-      case "backend":
-        setCategory("#バックエンドエンジニア");
+      case "r&b":
+        setCategory("#R&B/SOUL");
         break;
-      case "infra":
-        setCategory("#インフラエンジニア");
+      case "hardrock":
+        setCategory("#HARD ROCK");
         break;
-      case "designer":
-        setCategory("#デザイナー");
+      case "heabymetal":
+        setCategory("#HEABY METAL");
+      case "blues":
+        setCategory("#BLUES");
+        break;
+      case "jazz":
+        setCategory("#JAZZ");
+        break;
+      case "fusion":
+        setCategory("#FUSION");
+        break;
+      case "jpop":
+        setCategory("#JPOP");
         break;
       default:
         break;
