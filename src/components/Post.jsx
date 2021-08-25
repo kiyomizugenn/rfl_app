@@ -107,6 +107,7 @@ export const Post = (props) => {
         break;
       case "heabymetal":
         setCategory("#HEABY METAL");
+        break;
       case "blues":
         setCategory("#BLUES");
         break;
