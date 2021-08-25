@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 
 // material ui
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -28,17 +28,29 @@ export const Tags = () => {
   return (
     <>
       <List className={classes.root} aria-label="contacts">
-        <ListItem button onClick={() => isSelected("backend")}>
-          <ListItemText primary="#バックエンド" id="backend" />
+        <ListItem button onClick={() => isSelected("rock")}>
+          <ListItemText primary="#ROCK/POPS" id="rock" />
         </ListItem>
-        <ListItem button onClick={() => isSelected("frontend")}>
-          <ListItemText primary="#フロントエンド" id="frontend" />
+        <ListItem button onClick={() => isSelected("r&b")}>
+          <ListItemText primary="#R&B/SOUL" id="r&b" />
         </ListItem>
-        <ListItem button onClick={() => isSelected("infra")}>
-          <ListItemText primary="#インフラエンジニア" id="infra" />
+        <ListItem button onClick={() => isSelected("hardrock")}>
+          <ListItemText primary="#HARD ROCK" id="hardrock" />
         </ListItem>
-        <ListItem button onClick={() => isSelected("designer")}>
-          <ListItemText primary="#デザイナー" id="designer" />
+        <ListItem button onClick={() => isSelected("heabymetal")}>
+          <ListItemText primary="#HEABY METAL" id="heabymetal" />
+        </ListItem>
+        <ListItem button onClick={() => isSelected("blues")}>
+          <ListItemText primary="#BLUES" id="blues" />
+        </ListItem>
+        <ListItem button onClick={() => isSelected("jazz")}>
+          <ListItemText primary="#JAZZ" id="jazz" />
+        </ListItem>
+        <ListItem button onClick={() => isSelected("fusion")}>
+          <ListItemText primary="#FUSION" id="fusion" />
+        </ListItem>
+        <ListItem button onClick={() => isSelected("jpop")}>
+          <ListItemText primary="#JPOP" id="jpop" />
         </ListItem>
       </List>
     </>
