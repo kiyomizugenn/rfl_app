@@ -118,10 +118,14 @@ const PostForm = () => {
                     setCategory(e.target.value);
                   }}
                 >
-                  <MenuItem value="frontend">フロントエンドエンジニア</MenuItem>
-                  <MenuItem value="backend">バックエンドエンジニア</MenuItem>
-                  <MenuItem value="infra">インフラエンジニア</MenuItem>
-                  <MenuItem value="designer">デザイナー</MenuItem>
+                  <MenuItem value="rock">ROCK/POPS</MenuItem>
+                  <MenuItem value="r&b">R&B/SOUL</MenuItem>
+                  <MenuItem value="hardrock">HARD ROCK</MenuItem>
+                  <MenuItem value="heabymetal">HEABY METAL</MenuItem>
+                  <MenuItem value="blues">BLUES</MenuItem>
+                  <MenuItem value="jazz">JAZZ</MenuItem>
+                  <MenuItem value="fusion">FUSION</MenuItem>
+                  <MenuItem value="jpop">JPOP</MenuItem>
                 </Select>
               </FormControl>
               <br />
