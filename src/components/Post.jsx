@@ -168,11 +168,11 @@ export const Post = (props) => {
           }))
         );
       });
-
     return () => {
       unSub();
     };
   }, [props.postId]);
+
   return (
     <div className={styles.post}>
       <div className={styles.post_items}>
@@ -213,6 +213,7 @@ export const Post = (props) => {
             title={props.username}
             subheader={new Date(props.timestamp?.toDate()).toLocaleString()}
           />
+
           <Typography className={classes.title} variant="h5" component="h3">
             {props.title}
           </Typography>
